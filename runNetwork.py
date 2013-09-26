@@ -69,16 +69,16 @@ def pickAParentSubmission(subm):
         
 
 def main():
-    print "Starting"
+    print("Starting")
 
-    print "Loading text for posts"
+    print("Loading text for posts")
     posts = loadText("quotes.txt")
     
     U = 5
     T = 20
     
-    print "Number of users: %s" %U
-    print "Number of rounds: %s" %T
+    print("Number of users: %s" %U)
+    print("Number of rounds: %s" %T)
 
     #model parameters
     gamma = np.random.gamma(5,1)
@@ -91,15 +91,15 @@ def main():
     phi = np.random.beta(1,9)
 
     #HDP
-    print "Creating HDP with parameters gamma=%s and alpha_0=%s" %(gamma,alpha_0)
+    print("Creating HDP with parameters gamma=%s and alpha_0=%s" %(gamma,alpha_0))
     hdProcess = hdp.HDP(gamma, alpha_0)
     #list of users
     users = []
     
     #sample topic distributions from the HDP
     #and assign them to users
-    print "Creating user instances with parameters eta=%s, B=%s, Delta=%s, epsilon=%s, phi=%s" \
-           %(eta,B,Delta,epsilon, phi)
+    print("Creating user instances with parameters eta=%s, B=%s, Delta=%s, epsilon=%s, phi=%s" \
+           %(eta,B,Delta,epsilon, phi))
     for i in range(U):
         topicDistr = hdProcess.newSample()
         #u = network.User(eta,B,Delta,topicDistr, epsilon, phi)
@@ -107,35 +107,35 @@ def main():
         users.append(u)
 
     #Start "Social Network" environment
-    print "Creating social network environment"
+    print("Creating social network environment")
     reddit = network.Network(users)
     
     for i in range(T):
-        print "Round %s" %(i+1)
+        print("Round %s" %(i+1))
         #pick a user and a topic for that user
         userIndex = random.randint(0,len(users)-1)
         u = reddit.getUser(userIndex)
         topicId = u.pickTopicFromLearned()
-        print "User %s will make a submission in topic %s" %(userIndex, topicId)
+        print("User %s will make a submission in topic %s" %(userIndex, topicId))
         
         #get all submissions in that topic
         #create a distribution over submissions (including the "New Submission" option)
         #and pick submission from the distribution
         submissions = reddit.getSubmissionsByTopic(topicId)
-        print "There are %s submissions in this topic" %len(submissions)
+        print("There are %s submissions in this topic" %len(submissions))
         candidateSubmissions = [s for s in submissions
                                 if not (s[1].authorId == userIndex and len(s[1].comments) == 0)]
         submissionDistr = getSubmissionDistribution(candidateSubmissions, newSubmissionPrior)
         subm = pickSubmission(submissionDistr)
         if subm[0] < 0:
             #new submission
-            print "Making new submission"
+            print("Making new submission")
             newSubmission = network.Submission(userIndex, topicId, random.choice(posts))
             reddit.addSubmission(newSubmission)
         else:
             #pick a random comment within the submission to reply to
             #and update propensity of the author of that comment
-            print "Commenting in existing submission"
+            print("Commenting in existing submission")
             parent = pickAParentSubmission(subm)
             #prevent user from replying to himself
             while parent[1].authorId == userIndex:
@@ -147,21 +147,21 @@ def main():
         #update poster's propensity
         u.updatePropensity(topicId)
 
-    print "End of simulation. Printing all comments in all topics and all user propensities"
-    print "Number of submissions: %s" %len(reddit.submissions)
+    print("End of simulation. Printing all comments in all topics and all user propensities")
+    print("Number of submissions: %s" %len(reddit.submissions))
     for i in sorted(network.Propensity.sampledActions):
-        print "---------------------------------"
-        print "Topic %s" %i
+        print("---------------------------------")
+        print("Topic %s" %i)
         submissions = reddit.getSubmissionsByTopic(i)
         for s in submissions:
             s[1].printSubmissionTree()
 
     for i in range(len(users)):
-        print "--------------------------"
-        print "user %s" %i
-        print "Propensity:"
-        print users[i].propensity.weights
+        print("--------------------------")
+        print("user %s" %i)
+        print("Propensity:")
+        print(users[i].propensity.weights)
         
-    print "Done"
+    print("Done")
     
 if __name__=="__main__": main()

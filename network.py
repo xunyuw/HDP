@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import sys
 import hdp
 import random
 import numpy  as np
@@ -133,11 +134,11 @@ class Submission:
             prints the same information for each of its children.
             padding is a string of text to be appended at the beginning of each line
         """
-        print padding + "Author: %s" %self.authorId
-        print padding + "Content: %s" %self.content
+        print(padding + "Author: %s" %self.authorId)
+        print(padding + "Content: %s" %self.content)
 
         if self.comments:
-            print padding + "Children:"        
+            print(padding + "Children:")        
             for c in self.comments:
                 c.printSubmissionTree(padding+"  ")
 
@@ -366,88 +367,88 @@ def testPropensity():
     epsilon = np.random.beta(2,8)
     phi = np.random.beta(1,9)
 
-    print "Creating HDP with parameters gamma=%s and alpha_0=%s" %(gamma,alpha_0)
+    print("Creating HDP with parameters gamma=%s and alpha_0=%s" %(gamma,alpha_0))
     hdProcess = hdp.HDP(gamma, alpha_0)
     G_j1 = hdProcess.newSample()
     G_j2 = hdProcess.newSample()
 
-    print "Creating propensity instances"
+    print("Creating propensity instances")
     prop1 = Propensity(eta, G_j1, epsilon, phi)
     prop2 = Propensity(eta, G_j2, epsilon, phi)
 
-    print "Sampled topics should be empty"
+    print("Sampled topics should be empty")
     if prop1.sampledActions:
-        print "Error. sampledActions is not empty. Exiting"
+        print("Error. sampledActions is not empty. Exiting")
         sys.exit()
-    print "Sampling topic from prop1"
+    print("Sampling topic from prop1")
     x1 = prop1.sampleIndex()
-    print "Topic sampled: %s" %x1
-    print "weight: %s" %prop1.weights[x1]
-    print "weight of prior: %s" %prop1.priorTopicDistr.weights[x1]
-    print "sampledActions should be the same for prop1 and prop2"
+    print("Topic sampled: %s" %x1)
+    print("weight: %s" %prop1.weights[x1])
+    print("weight of prior: %s" %prop1.priorTopicDistr.weights[x1])
+    print("sampledActions should be the same for prop1 and prop2")
     if prop1.sampledActions != prop2.sampledActions or x1 not in prop1.sampledActions:
-        print "Error. Invalid contents in sampledActions."
-        print prop1.sampledActions
-        print "Exiting"
+        print("Error. Invalid contents in sampledActions.")
+        print(prop1.sampledActions)
+        print("Exiting")
         sys.exit()
-    print prop1.sampledActions
-    print "Sampling topic from prop2"
+    print(prop1.sampledActions)
+    print("Sampling topic from prop2")
     x2 = prop2.sampleIndex()
-    print "Topic sampled: %s" %x2
-    print "weight: %s" %prop2.weights[x2]
-    print "weight of prior: %s" %prop2.priorTopicDistr.weights[x2]
-    print "sampledActions should be the same for prop1 and prop2"
+    print("Topic sampled: %s" %x2)
+    print("weight: %s" %prop2.weights[x2])
+    print("weight of prior: %s" %prop2.priorTopicDistr.weights[x2])
+    print("sampledActions should be the same for prop1 and prop2")
     if prop1.sampledActions != prop2.sampledActions or x2 not in prop2.sampledActions:
-        print "Error. Invalid contents in sampledActions."
-        print prop2.sampledActions
-        print "Exiting"
+        print("Error. Invalid contents in sampledActions.")
+        print(prop2.sampledActions)
+        print("Exiting")
         sys.exit()
-    print prop1.sampledActions
+    print(prop1.sampledActions)
 
-    print "Extending prop1 and prop2 to have at least 5 elements each"
+    print("Extending prop1 and prop2 to have at least 5 elements each")
     prop1[4]
     prop2[4]
-    print "Weights of the first 5 actions"
-    print prop1.weights[:5]
-    print prop2.weights[:5]
+    print("Weights of the first 5 actions")
+    print(prop1.weights[:5])
+    print(prop2.weights[:5])
 
-    print "Updating weight 0 with a reward of 2"
+    print("Updating weight 0 with a reward of 2")
     prop1.update(0,2)
     prop2.update(0,2)
-    print "prop1 weights and exploration fund after updating"
-    print prop1.weights[0:5]
-    print prop1.explorationFund
-    print "prop2 weights and exploration fund after updating"
-    print prop2.weights[0:5]
-    print prop2.explorationFund
+    print("prop1 weights and exploration fund after updating")
+    print(prop1.weights[0:5])
+    print(prop1.explorationFund)
+    print("prop2 weights and exploration fund after updating")
+    print(prop2.weights[0:5])
+    print(prop2.explorationFund)
 
-    print "Sampling again"
-    print "Sampling topic from prop1"
+    print("Sampling again")
+    print("Sampling topic from prop1")
     x1 = prop1.sampleIndex()
-    print "Topic sampled: %s" %x1
-    print "weight: %s" %prop1.weights[x1]
-    print "weight of prior: %s" %prop1.priorTopicDistr.weights[x1]
-    print "sampledActions should be the same for prop1 and prop2"
+    print("Topic sampled: %s" %x1)
+    print("weight: %s" %prop1.weights[x1])
+    print("weight of prior: %s" %prop1.priorTopicDistr.weights[x1])
+    print("sampledActions should be the same for prop1 and prop2")
     if prop1.sampledActions != prop2.sampledActions or x1 not in prop1.sampledActions:
-        print "Error. Invalid contents in sampledActions."
-        print prop1.sampledActions
-        print "Exiting"
+        print("Error. Invalid contents in sampledActions.")
+        print(prop1.sampledActions)
+        print("Exiting")
         sys.exit()
-    print prop1.sampledActions
-    print "Sampling topic from prop2"
+    print(prop1.sampledActions)
+    print("Sampling topic from prop2")
     x2 = prop2.sampleIndex()
-    print "Topic sampled: %s" %x2
-    print "weight: %s" %prop2.weights[x2]
-    print "weight of prior: %s" %prop2.priorTopicDistr.weights[x2]
-    print "sampledActions should be the same for prop1 and prop2"
+    print("Topic sampled: %s" %x2)
+    print("weight: %s" %prop2.weights[x2])
+    print("weight of prior: %s" %prop2.priorTopicDistr.weights[x2])
+    print("sampledActions should be the same for prop1 and prop2")
     if prop1.sampledActions != prop2.sampledActions or x2 not in prop2.sampledActions:
-        print "Error. Invalid contents in sampledActions."
-        print prop2.sampledActions
-        print "Exiting"
+        print("Error. Invalid contents in sampledActions.")
+        print(prop2.sampledActions)
+        print("Exiting")
         sys.exit()
-    print prop1.sampledActions
+    print(prop1.sampledActions)
 
-    print "Done Testing"
+    print("Done Testing")
 
 def testUser():
     gamma = np.random.gamma(5,1)
@@ -459,35 +460,35 @@ def testUser():
     epsilon = np.random.beta(2,8)
     phi = np.random.beta(1,9)
 
-    print "Creating HDP with parameters gamma=%s and alpha_0=%s" %(gamma,alpha_0)
+    print("Creating HDP with parameters gamma=%s and alpha_0=%s" %(gamma,alpha_0))
     hdProcess = hdp.HDP(gamma, alpha_0)
     G_j1 = hdProcess.newSample()
 
-    print "Creating user instance with parameters eta=%s, B=%s, Delta=%s, epsilon=%s, phi=%s" \
-           %(eta,B,Delta,epsilon, phi)
+    print("Creating user instance with parameters eta=%s, B=%s, Delta=%s, epsilon=%s, phi=%s" \
+           %(eta,B,Delta,epsilon, phi))
     u = User(eta, B, Delta, G_j1, epsilon, phi)
 
-    print "Picking topic from prior distribution"
+    print("Picking topic from prior distribution")
     pTopic = u.pickTopicFromPrior()
-    print "Topic selected: %s" %pTopic
-    print "Picking topic from learned distribution"
+    print("Topic selected: %s" %pTopic)
+    print("Picking topic from learned distribution")
     pTopic = u.pickTopicFromLearned()
-    print "Topic selected: %s" %pTopic
+    print("Topic selected: %s" %pTopic)
 
-    print "These are the propensities of the user so far:"
-    print u.propensity.weights
+    print("These are the propensities of the user so far:")
+    print(u.propensity.weights)
 
-    print "Updating propensity after a submission in topic %s" %pTopic
+    print("Updating propensity after a submission in topic %s" %pTopic)
     u.updatePropensity(pTopic)
-    print "Propensities after updating:"
-    print u.propensity.weights
+    print("Propensities after updating:")
+    print(u.propensity.weights)
     pTopic = u.pickTopicFromLearned()
-    print "Updating propensity after getting a comment in topic %s" %pTopic
+    print("Updating propensity after getting a comment in topic %s" %pTopic)
     u.updatePropensity(pTopic, User.COMMENT)
-    print "Propensities after updating:"
-    print u.propensity.weights
+    print("Propensities after updating:")
+    print(u.propensity.weights)
 
-    print "Done Testing"
+    print("Done Testing")
     
 if __name__=="__main__":
     testUser()
